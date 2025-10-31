@@ -20,30 +20,23 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    // WebAuthn Registration Routes
-    Route::post('webauthn/register/options', [WebAuthnRegisterController::class, 'options'])
-        ->name('webauthn.register.options');
-    
-    Route::post('webauthn/register', [WebAuthnRegisterController::class, 'register'])
-        ->name('webauthn.register');
-
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
-    // WebAuthn Login Routes
+    // WebAuthn Login Routes (guest can log in)
     Route::post('webauthn/login/options', [WebAuthnLoginController::class, 'options'])
         ->name('webauthn.login.options');
-    
+
     Route::post('webauthn/login', [WebAuthnLoginController::class, 'login'])
         ->name('webauthn.login');
 
     // Magic Link Routes
     Route::get('magic-link', [MagicLinkController::class, 'create'])
         ->name('magic-link.create');
-    
+
     Route::post('magic-link', [MagicLinkController::class, 'store'])
         ->name('magic-link.store');
-    
+
     Route::get('magic-link/verify', [MagicLinkController::class, 'verify'])
         ->name('magic-link.verify');
 
@@ -62,6 +55,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // WebAuthn Registration Routes (must be authenticated)
+    Route::post('webauthn/register/options', [WebAuthnRegisterController::class, 'options'])
+        ->name('webauthn.register.options');
+
+    Route::post('webauthn/register', [WebAuthnRegisterController::class, 'register'])
+        ->name('webauthn.register');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 

@@ -35,7 +35,7 @@ class MagicLinkController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             // For security, don't reveal if email exists
             return back()->with('status', 'If that email address is in our system, we\'ve sent you a magic link!');
         }
@@ -57,8 +57,8 @@ class MagicLinkController extends Controller
         ]);
 
         // Send the magic link email
-        $magicLink = url('/magic-link/verify?token=' . $token . '&email=' . urlencode($request->email));
-        
+        $magicLink = url('/magic-link/verify?token='.$token.'&email='.urlencode($request->email));
+
         Mail::raw(
             "Click the link below to sign in:\n\n{$magicLink}\n\nThis link will expire in 15 minutes.",
             function ($message) use ($request) {
@@ -87,7 +87,7 @@ class MagicLinkController extends Controller
             ->where('expires_at', '>', now())
             ->first();
 
-        if (!$tokenRecord) {
+        if (! $tokenRecord) {
             throw ValidationException::withMessages([
                 'email' => ['This magic link is invalid or has expired.'],
             ]);
@@ -101,7 +101,7 @@ class MagicLinkController extends Controller
         // Find and log in the user
         $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             throw ValidationException::withMessages([
                 'email' => ['User not found.'],
             ]);
