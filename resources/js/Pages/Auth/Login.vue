@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { base64UrlToUint8Array, arrayBufferToBase64 } from '@/utils/webauthn';
 
 defineProps({
     status: {
@@ -45,14 +46,14 @@ const loginWithPasskey = async () => {
         }
 
         const options = await optionsResponse.json();
-        
+
         // Convert base64url to Uint8Array
-        options.challenge = Uint8Array.from(atob(options.challenge.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
-        
+        options.challenge = base64UrlToUint8Array(options.challenge);
+
         if (options.allowCredentials) {
             options.allowCredentials = options.allowCredentials.map(cred => ({
                 ...cred,
-                id: Uint8Array.from(atob(cred.id.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))
+                id: base64UrlToUint8Array(cred.id)
             }));
         }
 
@@ -63,12 +64,12 @@ const loginWithPasskey = async () => {
         const credentialJSON = {
             id: credential.id,
             type: credential.type,
-            rawId: btoa(String.fromCharCode(...new Uint8Array(credential.rawId))),
+            rawId: arrayBufferToBase64(credential.rawId),
             response: {
-                clientDataJSON: btoa(String.fromCharCode(...new Uint8Array(credential.response.clientDataJSON))),
-                authenticatorData: btoa(String.fromCharCode(...new Uint8Array(credential.response.authenticatorData))),
-                signature: btoa(String.fromCharCode(...new Uint8Array(credential.response.signature))),
-                userHandle: credential.response.userHandle ? btoa(String.fromCharCode(...new Uint8Array(credential.response.userHandle))) : null,
+                clientDataJSON: arrayBufferToBase64(credential.response.clientDataJSON),
+                authenticatorData: arrayBufferToBase64(credential.response.authenticatorData),
+                signature: arrayBufferToBase64(credential.response.signature),
+                userHandle: credential.response.userHandle ? arrayBufferToBase64(credential.response.userHandle) : null,
             },
         };
 

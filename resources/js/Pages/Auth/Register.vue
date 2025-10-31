@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { base64UrlToUint8Array, arrayBufferToBase64 } from '@/utils/webauthn';
 
 const form = useForm({
     name: '',
@@ -50,10 +51,10 @@ const registerWithPasskey = async () => {
         }
 
         const options = await optionsResponse.json();
-        
+
         // Convert base64url to Uint8Array
-        options.challenge = Uint8Array.from(atob(options.challenge.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
-        options.user.id = Uint8Array.from(atob(options.user.id.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+        options.challenge = base64UrlToUint8Array(options.challenge);
+        options.user.id = base64UrlToUint8Array(options.user.id);
 
         // Create the credential
         const credential = await navigator.credentials.create({ publicKey: options });
@@ -62,10 +63,10 @@ const registerWithPasskey = async () => {
         const credentialJSON = {
             id: credential.id,
             type: credential.type,
-            rawId: btoa(String.fromCharCode(...new Uint8Array(credential.rawId))),
+            rawId: arrayBufferToBase64(credential.rawId),
             response: {
-                clientDataJSON: btoa(String.fromCharCode(...new Uint8Array(credential.response.clientDataJSON))),
-                attestationObject: btoa(String.fromCharCode(...new Uint8Array(credential.response.attestationObject))),
+                clientDataJSON: arrayBufferToBase64(credential.response.clientDataJSON),
+                attestationObject: arrayBufferToBase64(credential.response.attestationObject),
             },
         };
 

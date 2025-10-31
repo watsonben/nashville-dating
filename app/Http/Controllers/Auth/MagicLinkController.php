@@ -59,13 +59,7 @@ class MagicLinkController extends Controller
         // Send the magic link email
         $magicLink = url('/magic-link/verify?token='.$token.'&email='.urlencode($request->email));
 
-        Mail::raw(
-            "Click the link below to sign in:\n\n{$magicLink}\n\nThis link will expire in 15 minutes.",
-            function ($message) use ($request) {
-                $message->to($request->email)
-                    ->subject('Your Magic Sign-In Link');
-            }
-        );
+        Mail::to($request->email)->send(new \App\Mail\MagicLinkMail($magicLink));
 
         return back()->with('status', 'If that email address is in our system, we\'ve sent you a magic link!');
     }
