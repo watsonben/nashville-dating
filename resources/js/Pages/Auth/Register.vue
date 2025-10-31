@@ -84,8 +84,8 @@ const registerWithPasskey = async () => {
             throw new Error('Failed to register passkey');
         }
 
-        // Redirect to dashboard
-        router.visit(route('dashboard'));
+        // Redirect to gender selection
+        router.visit(route('gender.create'));
     } catch (err) {
         console.error('Passkey registration error:', err);
         error.value = err.message || 'Failed to register passkey. Please try again.';

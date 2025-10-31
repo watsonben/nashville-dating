@@ -19,6 +19,7 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    gender: user.gender,
 });
 </script>
 
@@ -67,6 +68,24 @@ const form = useForm({
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+
+            <div>
+                <InputLabel for="gender" value="Gender" />
+
+                <select
+                    id="gender"
+                    v-model="form.gender"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="non-binary">Non-binary</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <InputError class="mt-2" :message="form.errors.gender" />
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
