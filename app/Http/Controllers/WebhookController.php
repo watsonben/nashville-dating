@@ -23,6 +23,7 @@ class WebhookController extends Controller
             $event = Webhook::constructEvent($payload, $sigHeader, $webhookSecret);
         } catch (SignatureVerificationException $e) {
             Log::error('Stripe webhook signature verification failed', ['error' => $e->getMessage()]);
+
             return response()->json(['error' => 'Invalid signature'], 400);
         }
 
@@ -63,7 +64,7 @@ class WebhookController extends Controller
             $user->update([
                 'stripe_subscription_id' => $subscription->id,
                 'stripe_subscription_status' => $subscription->status,
-                'subscription_ends_at' => $subscription->cancel_at 
+                'subscription_ends_at' => $subscription->cancel_at
                     ? now()->addSeconds($subscription->cancel_at - time())
                     : null,
             ]);

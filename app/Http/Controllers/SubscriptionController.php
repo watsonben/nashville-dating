@@ -21,7 +21,7 @@ class SubscriptionController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         return inertia('Subscription/Index', [
             'subscription' => [
                 'status' => $user->stripe_subscription_status,
@@ -39,12 +39,12 @@ class SubscriptionController extends Controller
         $user = Auth::user();
 
         // Create Stripe customer if doesn't exist
-        if (!$user->stripe_customer_id) {
+        if (! $user->stripe_customer_id) {
             $customer = $this->stripe->customers->create([
                 'email' => $user->email,
                 'name' => $user->name,
             ]);
-            
+
             $user->update(['stripe_customer_id' => $customer->id]);
         }
 
@@ -65,7 +65,7 @@ class SubscriptionController extends Controller
                 ],
                 'quantity' => 1,
             ]],
-            'success_url' => route('subscription.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => route('subscription.success').'?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('subscription.index'),
         ]);
 
@@ -80,11 +80,11 @@ class SubscriptionController extends Controller
     public function success(Request $request)
     {
         $sessionId = $request->query('session_id');
-        
+
         if ($sessionId) {
             $session = $this->stripe->checkout->sessions->retrieve($sessionId);
             $user = Auth::user();
-            
+
             if ($session->customer === $user->stripe_customer_id) {
                 $user->update([
                     'stripe_subscription_id' => $session->subscription,

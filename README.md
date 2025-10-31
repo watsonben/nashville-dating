@@ -7,6 +7,22 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Nashville Dating
+
+A Laravel-based dating application with Stripe subscription integration.
+
+### Features
+
+- User authentication with WebAuthn and Magic Link support
+- Monthly subscriptions ($9.99/month) powered by Stripe
+- Subscription management (subscribe, cancel, resume)
+- Webhook integration for real-time subscription updates
+- Vue.js frontend with Inertia.js
+
+### Stripe Subscription
+
+This application includes a complete Stripe subscription integration. For setup instructions, see [STRIPE_SETUP.md](STRIPE_SETUP.md).
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
