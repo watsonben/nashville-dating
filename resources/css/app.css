@@ -2,6 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Brand / accents */
+  --color-primary: #E85C7A;       /* Rose Ember */
+  --color-primary-hover: #F06A86; /* Crimson Glow */
+  --color-accent-2: #D4A056;      /* Muted Gold */
+  --color-accent-3: #602749;      /* Wine Plum */
+  --color-interactive-link: #E7A6B4; /* Rose Quartz */
+
+  /* Backgrounds / surfaces */
+  --color-bg: #0E0A0A;            /* Velvet Black (app background) */
+  --color-surface: #1B1315;       /* Charcoal Rose (cards / panels) */
+  --color-surface-2: #2B1F22;     /* Smoked Mauve (hover / elevated) */
+  --color-backdrop: rgba(14,10,10,0.6); /* overlays */
+
+  /* Text */
+  --color-text-primary: #F8EDEE;  /* Ivory Blush (primary text) */
+  --color-text-secondary: #C7A6A9;/* Rose Dust (subtext) */
+  --color-text-muted: rgba(199,166,169,0.55);
+
+  /* Borders / dividers */
+  --color-border: #382327;        /* Bordeaux Line */
+  --color-outline: rgba(232,92,122,0.18);
+
+  /* Status */
+  --color-success: #8BB37F;       /* Olive Mist */
+  --color-warning: #E2A353;       /* Amber Flame */
+  --color-error: #C24A5D;         /* Burnt Rose */
+
+  /* Elevation, shadows & glass */
+  --shadow-1: 0 4px 16px rgba(11,8,9,0.55);
+  --shadow-2: 0 8px 30px rgba(11,8,9,0.6);
+
+  /* Cards, buttons, chips */
+  --card-radius: 14px;
+  --control-radius: 12px;
+  --avatar-size: 44px;
+
+  /* Sizes / spacing (a small token set) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Gradients */
+  --gradient-cta: linear-gradient(160deg, #E85C7A 0%, #D4A056 100%);
+  --gradient-soft: radial-gradient(circle at 10% 10%, rgba(232,92,122,0.06), transparent 25%);
+
+  /* Tag palette (semantic mapping) */
+  --tag-recommended-bg: #E85C7A;
+  --tag-outdoor-bg: #8BB37F;
+  --tag-foodie-bg: #D4A056;
+  --tag-luxury-border: rgba(231,166,180,0.12);
+
+  /* Opacity tokens */
+  --alpha-muted: 0.55;
+  --alpha-overlay: 0.6;
+
+  /* Focus */
+  --focus-ring: 0 0 0 4px rgba(224,108,123,0.18);
+}
+
 /* Mobile-First Base Styles */
 @layer base {
     /* Set base font size for better mobile readability */
