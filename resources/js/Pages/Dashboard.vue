@@ -3,10 +3,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DateCard from '@/Components/DateCard.vue';
 import { Head } from '@inertiajs/vue3';
 import { getFridaysOfMonth } from '@/utils/dateUtils';
-import { ref } from 'vue';
+import { computed } from 'vue';
 
-// Get all Fridays of the current month
-const fridays = ref(getFridaysOfMonth());
+// Get all Fridays of the current month (computed to avoid recalculation)
+const fridays = computed(() => getFridaysOfMonth());
 
 // Sample date options for each Friday
 const dateOptions = [
@@ -68,8 +68,8 @@ const handleDateSelection = ({ date, option }) => {
                     class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                 >
                     <DateCard
-                        v-for="(friday, index) in fridays"
-                        :key="index"
+                        v-for="friday in fridays"
+                        :key="friday.getTime()"
                         :date="friday"
                         :options="dateOptions"
                         @select="handleDateSelection"

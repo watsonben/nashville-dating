@@ -27,19 +27,6 @@ export function getFridaysOfMonth() {
 }
 
 /**
- * Format a date as "Month Day, Year"
- * @param {Date} date 
- * @returns {string}
- */
-export function formatDate(date) {
-    return date.toLocaleDateString('en-US', { 
-        month: 'long', 
-        day: 'numeric', 
-        year: 'numeric' 
-    });
-}
-
-/**
  * Format a date as "Month Day"
  * @param {Date} date 
  * @returns {string}
