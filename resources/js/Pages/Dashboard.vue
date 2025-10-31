@@ -1,9 +1,10 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DateCard from '@/Components/DateCard.vue';
+import DateDetailsModal from '@/Components/DateDetailsModal.vue';
 import { Head } from '@inertiajs/vue3';
 import { getFridaysOfMonth } from '@/utils/dateUtils';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 // Get all Fridays of the current month (computed to avoid recalculation)
 const fridays = computed(() => getFridaysOfMonth());
@@ -30,9 +31,24 @@ const dateOptions = [
     }
 ];
 
+// Modal state
+const showModal = ref(false);
+const selectedDate = ref(null);
+const selectedOption = ref(null);
+
 const handleDateSelection = ({ date, option }) => {
-    console.log('Selected:', date, option);
-    // Future: Handle date selection logic here
+    selectedDate.value = date;
+    selectedOption.value = option;
+    showModal.value = true;
+};
+
+const closeModal = () => {
+    showModal.value = false;
+};
+
+const handleBook = () => {
+    // Modal handles the booking, just close after
+    closeModal();
 };
 </script>
 
@@ -77,5 +93,14 @@ const handleDateSelection = ({ date, option }) => {
                 </div>
             </div>
         </div>
+
+        <!-- Date Details Modal -->
+        <DateDetailsModal
+            :show="showModal"
+            :date="selectedDate"
+            :option="selectedOption"
+            @close="closeModal"
+            @book="handleBook"
+        />
     </AuthenticatedLayout>
 </template>
