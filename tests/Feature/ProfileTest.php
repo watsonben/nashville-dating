@@ -96,4 +96,24 @@ class ProfileTest extends TestCase
 
         $this->assertNotNull($user->fresh());
     }
+
+    public function test_profile_page_includes_subscription_data(): void
+    {
+        $user = User::factory()->create([
+            'stripe_customer_id' => 'cus_test123',
+            'stripe_subscription_id' => 'sub_test123',
+            'stripe_subscription_status' => 'active',
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/profile');
+
+        $response->assertOk();
+        $response->assertInertia(fn ($page) => $page
+            ->has('subscription')
+            ->where('subscription.status', 'active')
+            ->where('subscription.subscribed', true)
+        );
+    }
 }
