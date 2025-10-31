@@ -4,11 +4,14 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\MagicLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\WebAuthn\WebAuthnLoginController;
+use App\Http\Controllers\WebAuthn\WebAuthnRegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -20,8 +23,24 @@ Route::middleware('guest')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    // WebAuthn Login Routes (guest can log in)
+    Route::post('webauthn/login/options', [WebAuthnLoginController::class, 'options'])
+        ->name('webauthn.login.options');
 
+    Route::post('webauthn/login', [WebAuthnLoginController::class, 'login'])
+        ->name('webauthn.login');
+
+    // Magic Link Routes
+    Route::get('magic-link', [MagicLinkController::class, 'create'])
+        ->name('magic-link.create');
+
+    Route::post('magic-link', [MagicLinkController::class, 'store'])
+        ->name('magic-link.store');
+
+    Route::get('magic-link/verify', [MagicLinkController::class, 'verify'])
+        ->name('magic-link.verify');
+
+    // Keep legacy password routes for backward compatibility but deprecate
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 
@@ -36,6 +55,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // WebAuthn Registration Routes (must be authenticated)
+    Route::post('webauthn/register/options', [WebAuthnRegisterController::class, 'options'])
+        ->name('webauthn.register.options');
+
+    Route::post('webauthn/register', [WebAuthnRegisterController::class, 'register'])
+        ->name('webauthn.register');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
