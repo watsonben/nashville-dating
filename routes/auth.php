@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\GenderSelectionController;
 use App\Http\Controllers\Auth\MagicLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
@@ -55,6 +56,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Gender selection routes (for new users after registration)
+    Route::get('gender-selection', [GenderSelectionController::class, 'create'])
+        ->name('gender.create');
+
+    Route::post('gender-selection', [GenderSelectionController::class, 'store'])
+        ->name('gender.store');
+
     // WebAuthn Registration Routes (must be authenticated)
     Route::post('webauthn/register/options', [WebAuthnRegisterController::class, 'options'])
         ->name('webauthn.register.options');

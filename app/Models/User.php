@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'gender',
         'stripe_customer_id',
         'stripe_subscription_id',
         'stripe_subscription_status',
