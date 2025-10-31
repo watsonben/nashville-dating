@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
@@ -21,6 +21,9 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close', 'book']);
+
+const copyMessage = ref('');
+const showCopyMessage = ref(false);
 
 const dayOfWeek = computed(() => {
     if (!props.date) return '';
@@ -71,10 +74,18 @@ const copyToClipboard = async () => {
     
     try {
         await navigator.clipboard.writeText(text);
-        alert('Link copied to clipboard!');
+        copyMessage.value = 'Link copied to clipboard!';
+        showCopyMessage.value = true;
+        setTimeout(() => {
+            showCopyMessage.value = false;
+        }, 3000);
     } catch (err) {
         console.error('Failed to copy:', err);
-        alert('Failed to copy link. Please copy manually.');
+        copyMessage.value = 'Failed to copy link';
+        showCopyMessage.value = true;
+        setTimeout(() => {
+            showCopyMessage.value = false;
+        }, 3000);
     }
 };
 </script>
@@ -155,6 +166,24 @@ const copyToClipboard = async () => {
                     Share
                 </SecondaryButton>
             </div>
+
+            <!-- Copy Success Message -->
+            <Transition
+                enter-active-class="transition ease-out duration-200"
+                enter-from-class="opacity-0 translate-y-1"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition ease-in duration-150"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 translate-y-1"
+            >
+                <div
+                    v-if="showCopyMessage"
+                    class="mt-3 p-3 rounded-md text-sm text-center"
+                    :class="copyMessage.includes('Failed') ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800'"
+                >
+                    {{ copyMessage }}
+                </div>
+            </Transition>
         </div>
     </Modal>
 </template>
