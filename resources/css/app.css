@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile-First Base Styles */
+@layer base {
+    /* Set base font size for better mobile readability */
+    html {
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Ensure body takes full viewport height */
+    body {
+        @apply min-h-screen;
+        @apply text-base;
+    }
+
+    /* Mobile-first responsive typography */
+    h1 {
+        @apply text-2xl font-bold;
+        @apply sm:text-3xl;
+        @apply md:text-4xl;
+        @apply lg:text-5xl;
+    }
+
+    h2 {
+        @apply text-xl font-semibold;
+        @apply sm:text-2xl;
+        @apply md:text-3xl;
+    }
+
+    h3 {
+        @apply text-lg font-semibold;
+        @apply sm:text-xl;
+        @apply md:text-2xl;
+    }
+
+    /* Touch-friendly interactive elements */
+    button, a {
+        @apply min-h-[44px];
+        @apply inline-flex items-center justify-center;
+    }
+
+    /* Ensure images are responsive by default */
+    img {
+        @apply max-w-full h-auto;
+    }
+}
+
+@layer components {
+    /* Mobile-first container */
+    .container-mobile {
+        @apply w-full px-4;
+        @apply sm:px-6;
+        @apply md:px-8;
+        @apply lg:max-w-7xl lg:mx-auto;
+    }
+
+    /* Touch-friendly card component */
+    .card-mobile {
+        @apply p-4 rounded-lg shadow-sm;
+        @apply sm:p-6;
+        @apply md:p-8;
+    }
+
+    /* Mobile-optimized form inputs */
+    .input-mobile {
+        @apply min-h-[44px] px-3 py-2 text-base;
+        @apply rounded-lg border;
+        @apply focus:ring-2 focus:ring-offset-2;
+        @apply w-full;
+    }
+
+    /* Mobile-friendly button */
+    .btn-mobile {
+        @apply min-h-[44px] px-4 py-2;
+        @apply rounded-lg font-medium;
+        @apply transition-colors duration-200;
+        @apply w-full sm:w-auto;
+    }
+}
