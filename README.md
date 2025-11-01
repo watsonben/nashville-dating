@@ -1,75 +1,208 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Nashville Dating
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern dating application built for the Nashville community, featuring secure authentication and subscription-based access.
 
-## Nashville Dating
+## About
 
-A Laravel-based dating application with Stripe subscription integration.
+Nashville Dating is a Laravel-based dating platform that provides users with a secure, subscription-powered dating experience. The application emphasizes user privacy and security through modern authentication methods including passwordless magic links and WebAuthn (biometric) authentication.
 
-### Features
+## Key Features
 
-- User authentication with WebAuthn and Magic Link support
-- Monthly subscriptions ($9.99/month) powered by Stripe
-- Subscription management (subscribe, cancel, resume)
-- Webhook integration for real-time subscription updates
-- Vue.js frontend with Inertia.js
+### 🔐 Advanced Authentication
+- **Magic Link Login**: Passwordless authentication via email links
+- **WebAuthn Support**: Biometric authentication (fingerprint, Face ID, etc.)
+- **Traditional Email/Password**: Standard authentication option
+- **Gender Selection**: Required during registration for profile matching
 
-### Stripe Subscription
+### 💳 Subscription Management
+- **Monthly Plans**: $9.99/month subscription powered by Stripe
+- **Flexible Management**: Subscribe, cancel, or resume subscriptions at any time
+- **Grace Period**: Canceled subscriptions remain active until the end of the billing period
+- **Real-time Updates**: Stripe webhooks for instant subscription status updates
+- **Secure Payments**: PCI-compliant payment processing through Stripe
 
-This application includes a complete Stripe subscription integration. For setup instructions, see [STRIPE_SETUP.md](STRIPE_SETUP.md).
+### 🛠 Technical Stack
+- **Backend**: Laravel 12 (PHP 8.2+)
+- **Frontend**: Vue 3 with Inertia.js
+- **Styling**: Tailwind CSS
+- **Database**: PostgreSQL/MySQL/SQLite
+- **Payment Processing**: Stripe
+- **Build Tool**: Vite
 
-## About Laravel
+## Getting Started
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Prerequisites
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 8.2 or higher
+- Composer
+- Node.js 22.12.0 or higher
+- npm
+- Database (PostgreSQL, MySQL, or SQLite)
+- Stripe account (for subscription features)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Installation
 
-## Learning Laravel
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/watsonben/nashville-dating.git
+   cd nashville-dating
+   ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+2. **Install dependencies and set up the application**
+   ```bash
+   composer run setup
+   ```
+   
+   This command will:
+   - Install PHP dependencies
+   - Create `.env` file from `.env.example`
+   - Generate application key
+   - Run database migrations
+   - Install Node.js dependencies
+   - Build frontend assets
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. **Configure your environment**
+   
+   Edit the `.env` file and configure:
+   - Database connection settings
+   - Mail server settings (for magic links)
+   - Stripe API keys (see [STRIPE_SETUP.md](STRIPE_SETUP.md))
 
-## Laravel Sponsors
+4. **Set up Stripe** (required for subscriptions)
+   
+   Follow the detailed instructions in [STRIPE_SETUP.md](STRIPE_SETUP.md) to:
+   - Configure Stripe API keys
+   - Set up webhook endpoints
+   - Test subscription flows
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Development
 
-### Premium Partners
+Start the development environment with all services running:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer run dev
+```
+
+This starts:
+- PHP development server (port 8000)
+- Queue worker for background jobs
+- Application logs (Laravel Pail)
+- Vite dev server with hot module replacement
+
+Access the application at `http://localhost:8000`
+
+### Testing
+
+Run the test suite:
+
+```bash
+composer run test
+```
+
+Or use PHPUnit directly:
+
+```bash
+php artisan test
+```
+
+Test coverage includes:
+- Authentication flows (magic link, WebAuthn, traditional)
+- Subscription lifecycle (create, cancel, resume)
+- Stripe webhook handling
+- User profile management
+
+## Project Structure
+
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Auth/              # Authentication controllers
+│   │   │   ├── MagicLinkController.php
+│   │   │   ├── WebAuthn/
+│   │   ├── SubscriptionController.php
+│   │   ├── WebhookController.php
+│   │   └── ProfileController.php
+│   └── Middleware/
+├── Models/
+│   └── User.php               # User model with subscription methods
+resources/
+├── js/
+│   ├── Components/            # Reusable Vue components
+│   ├── Layouts/               # Page layouts
+│   └── Pages/                 # Inertia.js pages
+│       ├── Auth/              # Authentication pages
+│       ├── Subscription/      # Subscription management
+│       ├── Dashboard.vue
+│       └── Welcome.vue
+routes/
+├── web.php                    # Main application routes
+└── auth.php                   # Authentication routes
+```
+
+## User Flow
+
+1. **Registration**: Users sign up with email, password, and gender selection
+2. **Authentication**: Users can log in via:
+   - Traditional email/password
+   - Magic link (passwordless)
+   - WebAuthn (biometric)
+3. **Subscription**: After logging in, users can subscribe to access premium features
+4. **Profile Management**: Users can update their profile and manage subscriptions
+
+## Subscription Features
+
+The application includes a comprehensive subscription system:
+
+- **User Methods**:
+  - `hasActiveSubscription()`: Check if user has an active subscription
+  - `onGracePeriod()`: Check if canceled but still active
+  - `subscribed()`: Check if user can access subscription features
+
+- **Subscription Statuses**:
+  - `active`: Subscription is active and current
+  - `trialing`: User is in trial period
+  - `canceled`: Canceled but still active until period end
+  - `past_due`: Payment failed
+  - `unpaid`: Multiple payment failures
+
+For detailed subscription setup and management, see [STRIPE_SETUP.md](STRIPE_SETUP.md).
+
+## Configuration
+
+Key configuration files:
+
+- `.env`: Environment variables (database, mail, Stripe keys)
+- `config/database.php`: Database connections
+- `config/services.php`: Third-party service configuration
+- `config/mail.php`: Email service configuration
+
+## Deployment
+
+Before deploying to production:
+
+1. Set `APP_ENV=production` in `.env`
+2. Set `APP_DEBUG=false` in `.env`
+3. Configure production database credentials
+4. Set up production mail server
+5. Replace Stripe test keys with production keys
+6. Configure webhook endpoint for production URL
+7. Run migrations: `php artisan migrate --force`
+8. Build assets: `npm run build`
+9. Optimize application: `php artisan optimize`
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Code of Conduct
+## Security
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover any security vulnerabilities, please email the maintainer directly instead of using the issue tracker.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+Built with [Laravel](https://laravel.com), the PHP framework for web artisans.
